@@ -7,29 +7,95 @@
 //
 
 import UIKit
+import CoreLocation
+import HealthKit
+import CoreData
+
+let DetailSegueName = "RunDetails"
 
 class ViewController2: UIViewController {
 
+    var managedObjectContext: NSManagedObjectContext?
+    
     var timer = Timer()
-    var counter = 0
+    var seconds = 0.0
+    var distance = 0.0
     
-    @IBOutlet var countingLabel: UILabel!
-    @IBAction func clear(_ sender: UIBarButtonItem) {
+    lazy var locationManager: CLLocationManager = {
+        var _locationManager = CLLocationManager()
+        _locationManager.delegate = self
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        _locationManager.activityType = .fitness
+        
+        _locationManager.distanceFilter = 10.0
+        return _locationManager
+    }()
+    
+    lazy var locations = [CLLocation]()
+    
+    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var distanceLabel: UILabel!
+    @IBOutlet var paceLabel: UILabel!
+    @IBOutlet var startButton: UIButton!
+    @IBOutlet var stopButton: UIButton!
+    
+    @IBAction func startPressed(_ sender: UIButton) {
+        startButton.isHidden = true
+        
+        timeLabel.isHidden = false
+        distanceLabel.isHidden = false
+        paceLabel.isHidden = false
+        stopButton.isHidden = false
+        
+        seconds = 0.0
+        distance = 0.0
+        locations.removeAll(keepingCapacity: false)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self,
+                                                       selector: Selector(("eachSecond:")),
+                                                       userInfo: nil,
+                                                       repeats: true)
+        startLocationUpdates()
     }
     
-    func updateCounter() {
-        countingLabel.text = String(describing: counter += 1)
-    }
-    @IBAction func play(_ sender: UIBarButtonItem) {
-        timer = Timer.scheduledTimer(timeInterval:1, target:self, selector:#selector(ViewController2.updateCounter), userInfo:nil, repeats:true)
-    }
-    @IBAction func pause(_ sender: UIBarButtonItem) {
+    @IBAction func stopPressed(_ sender: UIButton) {
     }
     
+    func eachSecond(timer: Timer){
+        seconds += 1
+        let secondsQuantity = HKQuantity(unit: HKUnit.second(), doubleValue: seconds)
+        timeLabel.text = "Time: " + secondsQuantity.description
+        let distanceQuantity = HKQuantity(unit: HKUnit.meter(), doubleValue: distance)
+        distanceLabel.text = "Distance: " + distanceQuantity.description
+        
+        let paceUnit = HKUnit.second().unitDivided(by: HKUnit.meter())
+        let paceQuantity = HKQuantity(unit: paceUnit, doubleValue: seconds / distance)
+        paceLabel.text = "Pace: " + paceQuantity.description
+    }
+    
+    func startLocationUpdates() {
+        locationManager.startUpdatingLocation()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        startButton.isHidden = false
+        
+        timeLabel.isHidden = true
+        distanceLabel.isHidden = true
+        paceLabel.isHidden = true
+        stopButton.isHidden = true
+        
+        locationManager.requestAlwaysAuthorization()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer.invalidate()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        countingLabel.text = String(counter)
         // Do any additional setup after loading the view.
     }
 
@@ -37,6 +103,7 @@ class ViewController2: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
 
     /*
@@ -49,4 +116,7 @@ class ViewController2: UIViewController {
     }
     */
 
+}
+
+extension ViewController2: CLLocationManagerDelegate{
 }
