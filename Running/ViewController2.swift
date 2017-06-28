@@ -7,14 +7,15 @@
 //
 
 import UIKit
+/*
 import CoreLocation
 import HealthKit
 import CoreData
 
 let DetailSegueName = "RunDetails"
-
+*/
 class ViewController2: UIViewController {
-
+/*
     var managedObjectContext: NSManagedObjectContext?
     
     var timer = Timer()
@@ -106,7 +107,7 @@ class ViewController2: UIViewController {
     
     
 
-    /*
+ 
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -114,9 +115,10 @@ class ViewController2: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
-
+ 
+*/
 }
-
+/*
 extension ViewController2: CLLocationManagerDelegate{
 }
+*/
