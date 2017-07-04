@@ -1,14 +1,14 @@
 //
-//  ViewController3.swift
-//  Running
+//  ViewController2.swift
+//  TestAlertController
 //
-//  Created by Debbie Neubieser on 6/27/17.
+//  Created by Debbie Neubieser on 6/29/17.
 //  Copyright © 2017 Craig Neubieser. All rights reserved.
 //
 
 import UIKit
 
-class ViewController3: UIViewController {
+class ViewController2: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

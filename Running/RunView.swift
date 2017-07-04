@@ -7,18 +7,15 @@
 //
 
 import UIKit
-/*
-import CoreLocation
-import HealthKit
-import CoreData
 
 let DetailSegueName = "RunDetails"
-*/
+
 class ViewController2: UIViewController {
-/*
-    var managedObjectContext: NSManagedObjectContext?
-    
+
+    private var run: Run?
+
     var timer = Timer()
+        
     var seconds = 0.0
     var distance = 0.0
     
@@ -33,7 +30,7 @@ class ViewController2: UIViewController {
     }()
     
     lazy var locations = [CLLocation]()
-    
+
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var paceLabel: UILabel!
@@ -52,13 +49,27 @@ class ViewController2: UIViewController {
         distance = 0.0
         locations.removeAll(keepingCapacity: false)
         timer = Timer.scheduledTimer(timeInterval: 1, target: self,
-                                                       selector: Selector(("eachSecond:")),
+                                     selector: #selector(ViewController2.eachSecond(timer:)),
                                                        userInfo: nil,
                                                        repeats: true)
         startLocationUpdates()
     }
     
     @IBAction func stopPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Run Stopped", message: nil, preferredStyle: .alert)
+        let saveAction = UIAlertAction(title: "Save", style: .default, handler: self.saveHandler)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
+    }
+
+    func saveHandler(alert: UIAlertAction!) {
+
+        let viewController3 = ViewController3()
+        viewController3.customInit(timeStr: timeLabel.text!, distStr: distanceLabel.text!,
+                                   paceStr: paceLabel.text!)
+        self.navigationController?.pushViewController(viewController3, animated: true)
     }
     
     func eachSecond(timer: Timer){
@@ -105,20 +116,18 @@ class ViewController2: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
+}
 
- 
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+extension ViewController2: SegueHandlerType {
+    enum SegueIdentifier: String {
+        case details = "ViewController3"
     }
- 
-*/
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .details:
+            let destination = segue.destination as! ViewController3
+            destination.run = run
+        }
+    }
 }
-/*
-extension ViewController2: CLLocationManagerDelegate{
-}
-*/
