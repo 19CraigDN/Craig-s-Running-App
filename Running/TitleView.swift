@@ -8,25 +8,21 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class TitleView: UIViewController, UITextFieldDelegate {
 
-    //MARK: Properties
-    @IBOutlet weak var placeTextField: UITextField!
     @IBOutlet weak var placeNameLabel: UILabel!
+    @IBOutlet weak var placeTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Handle the text field's user input through delegate callbacks.
+
         placeTextField.delegate = self
     }
 
-    //override func didReceiveMemoryWarning() {
-    //    super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    //}
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
     
-    //Mark: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
         textField.resignFirstResponder()
@@ -37,11 +33,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         placeNameLabel.text = textField.text
     }
     
-    //MARK: Actions
-    @IBAction func setDefaultLabelText(_ sender: UIButton) {
+    @IBAction func setDefaultText(_ sender: UIButton) {
         placeNameLabel.text = "Default Text"
-    }
-
+      }
 
 }
 

@@ -7,127 +7,159 @@
 //
 
 import UIKit
+import CoreLocation
 
-let DetailSegueName = "RunDetails"
+class RunView: UIViewController {
 
-class ViewController2: UIViewController {
-
-    private var run: Run?
-
-    var timer = Timer()
+    fileprivate var run: Run?
+    
+    fileprivate let locationManager = LocationManager.shared
+    fileprivate var seconds = 0
+    fileprivate var timer: Timer?
+    fileprivate var distance = Measurement(value: 0, unit: UnitLength.meters)
+    fileprivate var locationList: [CLLocation] = []
+    
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var paceLabel: UILabel!
+    @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var stopButton: UIButton!
+    
+    @IBAction func startTapped(_ sender: Any) {
+        startRun()
+    }
+    
+    @IBAction func stopTapped(_ sender: Any) {
+        let alertController = UIAlertController(title: "End run?",
+                                                message: "Do you wish to end your run?",
+                                                preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alertController.addAction(UIAlertAction(title: "Save", style: .default) { _ in
+            self.stopRun()
+            self.saveRun()
+            self.performSegue(withIdentifier: .details, sender: nil)
+        })
+        alertController.addAction(UIAlertAction(title: "Discard", style: .destructive) { _ in
+            self.stopRun()
+            _ = self.navigationController?.popToRootViewController(animated: true)
+        })
         
-    var seconds = 0.0
-    var distance = 0.0
+        present(alertController, animated: true)
+    }
     
-    lazy var locationManager: CLLocationManager = {
-        var _locationManager = CLLocationManager()
-        _locationManager.delegate = self
-        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        _locationManager.activityType = .fitness
-        
-        _locationManager.distanceFilter = 10.0
-        return _locationManager
-    }()
-    
-    lazy var locations = [CLLocation]()
-
-    @IBOutlet var timeLabel: UILabel!
-    @IBOutlet var distanceLabel: UILabel!
-    @IBOutlet var paceLabel: UILabel!
-    @IBOutlet var startButton: UIButton!
-    @IBOutlet var stopButton: UIButton!
-    
-    @IBAction func startPressed(_ sender: UIButton) {
+    fileprivate func startRun() {
         startButton.isHidden = true
-        
+        stopButton.isHidden = false
         timeLabel.isHidden = false
         distanceLabel.isHidden = false
         paceLabel.isHidden = false
-        stopButton.isHidden = false
         
-        seconds = 0.0
-        distance = 0.0
-        locations.removeAll(keepingCapacity: false)
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self,
-                                     selector: #selector(ViewController2.eachSecond(timer:)),
-                                                       userInfo: nil,
-                                                       repeats: true)
+        seconds = 0
+        distance = Measurement(value: 0, unit: UnitLength.meters)
+        locationList.removeAll()
+        updateDisplay()
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            self.eachSecond()
+        }
         startLocationUpdates()
     }
     
-    @IBAction func stopPressed(_ sender: UIButton) {
-        let alertController = UIAlertController(title: "Run Stopped", message: nil, preferredStyle: .alert)
-        let saveAction = UIAlertAction(title: "Save", style: .default, handler: self.saveHandler)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alertController.addAction(saveAction)
-        alertController.addAction(cancelAction)
-        self.present(alertController, animated: true)
-    }
-
-    func saveHandler(alert: UIAlertAction!) {
-
-        let viewController3 = ViewController3()
-        viewController3.customInit(timeStr: timeLabel.text!, distStr: distanceLabel.text!,
-                                   paceStr: paceLabel.text!)
-        self.navigationController?.pushViewController(viewController3, animated: true)
-    }
-    
-    func eachSecond(timer: Timer){
-        seconds += 1
-        let secondsQuantity = HKQuantity(unit: HKUnit.second(), doubleValue: seconds)
-        timeLabel.text = "Time: " + secondsQuantity.description
-        let distanceQuantity = HKQuantity(unit: HKUnit.meter(), doubleValue: distance)
-        distanceLabel.text = "Distance: " + distanceQuantity.description
+    fileprivate func stopRun() {
+        startButton.isHidden = false
+        stopButton.isHidden = true
+        timeLabel.isHidden = false
+        distanceLabel.isHidden = false
+        paceLabel.isHidden = false
         
-        let paceUnit = HKUnit.second().unitDivided(by: HKUnit.meter())
-        let paceQuantity = HKQuantity(unit: paceUnit, doubleValue: seconds / distance)
-        paceLabel.text = "Pace: " + paceQuantity.description
+        locationManager.stopUpdatingLocation()
     }
     
-    func startLocationUpdates() {
+    func eachSecond() {
+        seconds += 1
+        updateDisplay()
+    }
+    
+    fileprivate func updateDisplay() {
+        let formattedDistance = FormatDisplay.distance(distance)
+        let formattedTime = FormatDisplay.time(seconds)
+        let formattedPace = FormatDisplay.pace(distance: distance,
+                                               seconds: seconds,
+                                               outputUnit: UnitSpeed.minutesPerMile)
+        
+        distanceLabel.text = "Distance:  \(formattedDistance)"
+        timeLabel.text = "Time:  \(formattedTime)"
+        paceLabel.text = "Pace:  \(formattedPace)"
+    }
+    
+    fileprivate func startLocationUpdates() {
+        locationManager.delegate = self
+        locationManager.activityType = .fitness
+        locationManager.distanceFilter = 10
         locationManager.startUpdatingLocation()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    fileprivate func saveRun() {
+        let newRun = Run(context: CoreDataStack.context)
+        newRun.distance = distance.value
+        newRun.duration = Int16(seconds)
+        newRun.timestamp = Date() as NSDate
         
-        startButton.isHidden = false
+        for location in locationList {
+            let locationObject = Location(context: CoreDataStack.context)
+            locationObject.timestamp = location.timestamp as NSDate
+            locationObject.latitude = location.coordinate.latitude
+            locationObject.longitude = location.coordinate.longitude
+            newRun.addToLocations(locationObject)
+        }
         
-        timeLabel.isHidden = true
-        distanceLabel.isHidden = true
-        paceLabel.isHidden = true
-        stopButton.isHidden = true
+        CoreDataStack.saveContext()
         
-        locationManager.requestAlwaysAuthorization()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        timer.invalidate()
+        run = newRun
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate()
+        locationManager.stopUpdatingLocation()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 }
 
-extension ViewController2: SegueHandlerType {
+extension RunView: SegueHandlerType {
     enum SegueIdentifier: String {
-        case details = "ViewController3"
+        case details = "DataView"
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .details:
-            let destination = segue.destination as! ViewController3
+            let destination = segue.destination as! DataView
             destination.run = run
+        }
+    }
+}
+
+extension RunView: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        for newLocation in locations {
+            let howRecent = newLocation.timestamp.timeIntervalSinceNow
+            guard newLocation.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
+            
+            if let lastLocation = locationList.last {
+                let delta = newLocation.distance(from: lastLocation)
+                distance = distance + Measurement(value: delta, unit: UnitLength.meters)
+            }
+            
+            locationList.append(newLocation)
         }
     }
 }
