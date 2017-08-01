@@ -8,10 +8,11 @@
 
 import UIKit
 import CoreLocation
+import CoreData
 
 class RunView: UIViewController {
-
-    fileprivate var run: Run?
+    
+    fileprivate var run: NSManagedObject?
     
     fileprivate let locationManager = LocationManager.shared
     fileprivate var seconds = 0
@@ -24,6 +25,12 @@ class RunView: UIViewController {
     @IBOutlet weak var paceLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
+    
+    // Transition functions
+    
+    @IBAction func pastDataTapped(_ sender: Any) {
+        self.performSegue(withIdentifier: .pastDetails, sender: nil)
+    }
     
     @IBAction func startTapped(_ sender: Any) {
         startRun()
@@ -46,6 +53,8 @@ class RunView: UIViewController {
         
         present(alertController, animated: true)
     }
+    
+    // Actual functions
     
     fileprivate func startRun() {
         startButton.isHidden = true
@@ -112,10 +121,16 @@ class RunView: UIViewController {
             newRun.addToLocations(locationObject)
         }
         
+        let managedContext = CoreDataStack.persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "Run",
+                                                in: managedContext)!
+    
         CoreDataStack.saveContext()
         
         run = newRun
     }
+    
+    // State functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,21 +142,23 @@ class RunView: UIViewController {
         locationManager.stopUpdatingLocation()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
 }
+
+// Extensions
 
 extension RunView: SegueHandlerType {
     enum SegueIdentifier: String {
         case details = "DataView"
+        case pastDetails = "FullDataView"
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .details:
             let destination = segue.destination as! DataView
+            destination.run = run
+        case .pastDetails:
+            let destination = segue.destination as! FullDataView
             destination.run = run
         }
     }

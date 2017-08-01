@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class DataView: UIViewController {
     
@@ -17,8 +18,7 @@ class DataView: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var paceLabel: UILabel!
     
-    
-    var run: Run!
+    var run: NSManagedObject!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,10 +33,11 @@ class DataView: UIViewController {
     }
     
     func configureView(){
-        let distance = Measurement(value: run.distance, unit: UnitLength.meters)
-        let seconds = Int(run.duration)
+        let thisRun = run as! Run
+        let distance = Measurement(value: thisRun.distance, unit: UnitLength.meters)
+        let seconds = Int(thisRun.duration)
         let formattedDistance = FormatDisplay.distance(distance)
-        let formattedDate = FormatDisplay.date(run.timestamp! as Date)
+        let formattedDate = FormatDisplay.date(thisRun.timestamp! as Date)
         let formattedTime = FormatDisplay.time(seconds)
         let formattedPace = FormatDisplay.pace(distance: distance,
                                                seconds: seconds,
@@ -50,8 +51,9 @@ class DataView: UIViewController {
     }
     
     fileprivate func mapRegion() -> MKCoordinateRegion? {
+        let thisRun = run as! Run
         guard
-            let locations = run.locations,
+            let locations = thisRun.locations,
             locations.count > 0
             else {
                 return nil
@@ -80,7 +82,8 @@ class DataView: UIViewController {
     }
     
     fileprivate func polyLine() -> MKPolyline {
-        guard let locations = run.locations else {
+        let thisRun = run as! Run
+        guard let locations = thisRun.locations else {
             return MKPolyline()
         }
         
@@ -92,8 +95,9 @@ class DataView: UIViewController {
     }
     
     fileprivate func loadMap() {
+        let thisRun = run as! Run
         guard
-            let locations = run.locations,
+            let locations = thisRun.locations,
             locations.count > 0,
             let region = mapRegion()
             else {

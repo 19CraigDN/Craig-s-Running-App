@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cCe-hi-ipc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cCe-hi-ipc">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,22 +30,22 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cq2-y2-Dxe">
-                                <rect key="frame" x="20" y="322.66666666666674" width="151" height="96.333333333333314"/>
+                                <rect key="frame" x="20" y="322" width="151" height="97"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Place to run" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hfr-F3-t6x">
-                                        <rect key="frame" x="0.0" y="0.0" width="92" height="20.333333333333314"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="92" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter place to run" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cbs-gU-uxv">
-                                        <rect key="frame" x="0.0" y="28.333333333333314" width="151" height="30"/>
+                                        <rect key="frame" x="0.0" y="29" width="151" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ux5-Rx-35s">
-                                        <rect key="frame" x="0.0" y="66.333333333333314" width="151" height="30"/>
+                                        <rect key="frame" x="0.0" y="67" width="151" height="30"/>
                                         <state key="normal" title="Set Default Label Text"/>
                                         <connections>
                                             <action selector="setDefaultText:" destination="cCe-hi-ipc" eventType="touchUpInside" id="EJR-aI-nFf"/>
@@ -105,19 +105,19 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ftr-CE-lfl">
-                                <rect key="frame" x="0.0" y="253" width="414" height="20"/>
+                                <rect key="frame" x="0.0" y="253" width="414" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pace:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwG-VU-UZN">
-                                <rect key="frame" x="0.0" y="411" width="414" height="20"/>
+                                <rect key="frame" x="0.0" y="413" width="414" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j2k-GA-1db">
-                                <rect key="frame" x="0.0" y="333" width="414" height="20"/>
+                                <rect key="frame" x="0.0" y="334" width="414" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -140,7 +140,13 @@
                             <constraint firstItem="j2k-GA-1db" firstAttribute="top" secondItem="Ftr-CE-lfl" secondAttribute="bottom" constant="60" id="yPa-fC-y5q"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="IaD-hg-flS"/>
+                    <navigationItem key="navigationItem" id="IaD-hg-flS">
+                        <barButtonItem key="leftBarButtonItem" title="Past Data" id="PZ3-mu-eJU">
+                            <connections>
+                                <action selector="pastDataTapped:" destination="yAC-ux-h3B" id="AAn-Me-Wdx"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="distanceLabel" destination="Ftr-CE-lfl" id="SDt-GD-jfa"/>
                         <outlet property="paceLabel" destination="bwG-VU-UZN" id="AmF-b9-bnE"/>
@@ -148,11 +154,42 @@
                         <outlet property="stopButton" destination="OKM-xg-gQ9" id="DRb-Mx-SE8"/>
                         <outlet property="timeLabel" destination="j2k-GA-1db" id="9YG-mp-Z8E"/>
                         <segue destination="bZW-F8-qTR" kind="show" identifier="DataView" id="7Vr-d7-jyY"/>
+                        <segue destination="2s0-Fc-d70" kind="show" identifier="FullDataView" id="oId-eb-JXx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FEG-FS-mXw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1765.217391304348" y="135.32608695652175"/>
+        </scene>
+        <!--Full Data View-->
+        <scene sceneID="W0e-ai-S4A">
+            <objects>
+                <viewController id="2s0-Fc-d70" customClass="FullDataView" customModule="Running" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mXU-xa-Nxb"/>
+                        <viewControllerLayoutGuide type="bottom" id="u5f-Zn-Ne9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="W20-it-CdY">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Distance:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQ8-Er-IqX">
+                                <rect key="frame" x="0.0" y="358" width="414" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="distLabel" destination="kQ8-Er-IqX" id="nBT-nG-1ut"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P84-Tn-voZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1763.7681159420292" y="877.98913043478262"/>
         </scene>
         <!--Data View-->
         <scene sceneID="ufn-MJ-O01">

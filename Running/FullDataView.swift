@@ -7,29 +7,27 @@
 //
 
 import UIKit
+import CoreData
 
 class FullDataView: UIViewController {
 
+    //var runs: [NSManagedObject] = []
+    var run: NSManagedObject!
+    
+    @IBOutlet weak var distLabel: UILabel!
+    //@IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        let thisRun = run as! Run
+        let distance = Measurement(value: thisRun.distance, unit: UnitLength.meters)
+        let formattedDistance = FormatDisplay.distance(distance)
+        distLabel.text = "Distance:  \(formattedDistance)"
+        /*
+        title = "The List"
+        tableView.register(UITableViewCell.self,
+                           forCellReuseIdentifier: "Cell")
+         */
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

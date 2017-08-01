@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9725431E1F19824C0078FA37 /* FullDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9725431D1F19824C0078FA37 /* FullDataView.swift */; };
 		974DC29F1F05BCA200786B6E /* DataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC29D1F05BCA200786B6E /* DataView.swift */; };
 		974DC2A31F05CD3700786B6E /* Running.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 974DC2A11F05CD3700786B6E /* Running.xcdatamodeld */; };
 		974DC2A51F099DCC00786B6E /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC2A41F099DCC00786B6E /* CoreDataStack.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9725431D1F19824C0078FA37 /* FullDataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullDataView.swift; sourceTree = "<group>"; };
 		974DC29D1F05BCA200786B6E /* DataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataView.swift; sourceTree = "<group>"; };
 		974DC2A21F05CD3700786B6E /* Running.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Running.xcdatamodel; sourceTree = "<group>"; };
 		974DC2A41F099DCC00786B6E /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				97613AE91EEA120C00346355 /* TitleView.swift */,
 				979D85811EF230C500CF836E /* RunView.swift */,
 				974DC29D1F05BCA200786B6E /* DataView.swift */,
+				9725431D1F19824C0078FA37 /* FullDataView.swift */,
 				97850A651F0C3E4600FF7D8C /* FormatDisplay.swift */,
 				974DC2A41F099DCC00786B6E /* CoreDataStack.swift */,
 				974DC2A61F099EFB00786B6E /* StoryboardSupport.swift */,
@@ -282,6 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97613AEA1EEA120C00346355 /* TitleView.swift in Sources */,
+				9725431E1F19824C0078FA37 /* FullDataView.swift in Sources */,
 				97613AE81EEA120C00346355 /* AppDelegate.swift in Sources */,
 				97850A641F09EDFB00FF7D8C /* LocationManager.swift in Sources */,
 				97850A661F0C3E4600FF7D8C /* FormatDisplay.swift in Sources */,
