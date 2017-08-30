@@ -13,6 +13,7 @@ import CoreData
 class RunView: UIViewController {
     
     fileprivate var run: NSManagedObject?
+    var managedObjectContext: NSManagedObjectContext!
     
     fileprivate let locationManager = LocationManager.shared
     fileprivate var seconds = 0
@@ -108,24 +109,26 @@ class RunView: UIViewController {
     }
     
     fileprivate func saveRun() {
-        let newRun = Run(context: CoreDataStack.context)
+        let newRun = Run(context: managedObjectContext)
+        
         newRun.distance = distance.value
         newRun.duration = Int16(seconds)
         newRun.timestamp = Date() as NSDate
         
         for location in locationList {
-            let locationObject = Location(context: CoreDataStack.context)
+            let locationObject = Location(context: managedObjectContext)
             locationObject.timestamp = location.timestamp as NSDate
             locationObject.latitude = location.coordinate.latitude
             locationObject.longitude = location.coordinate.longitude
-            newRun.addToLocations(locationObject)
+            newRun.addToLocation(locationObject)
         }
         
-        let managedContext = CoreDataStack.persistentContainer.viewContext
-        let entity = NSEntityDescription.entity(forEntityName: "Run",
-                                                in: managedContext)!
-    
-        CoreDataStack.saveContext()
+        do {
+            try self.managedObjectContext.save()
+        }
+        catch {
+            print("Could not save data \(error.localizedDescription)")
+        }
         
         run = newRun
     }
@@ -134,6 +137,8 @@ class RunView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -158,8 +163,9 @@ extension RunView: SegueHandlerType {
             let destination = segue.destination as! DataView
             destination.run = run
         case .pastDetails:
-            let destination = segue.destination as! FullDataView
-            destination.run = run
+            return
+//            let destination = segue.destination as! FullDataView
+//            destination.run = run
         }
     }
 }

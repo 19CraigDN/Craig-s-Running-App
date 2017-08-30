@@ -53,7 +53,7 @@ class DataView: UIViewController {
     fileprivate func mapRegion() -> MKCoordinateRegion? {
         let thisRun = run as! Run
         guard
-            let locations = thisRun.locations,
+            let locations = thisRun.location,
             locations.count > 0
             else {
                 return nil
@@ -83,7 +83,7 @@ class DataView: UIViewController {
     
     fileprivate func polyLine() -> MKPolyline {
         let thisRun = run as! Run
-        guard let locations = thisRun.locations else {
+        guard let locations = thisRun.location else {
             return MKPolyline()
         }
         
@@ -97,7 +97,7 @@ class DataView: UIViewController {
     fileprivate func loadMap() {
         let thisRun = run as! Run
         guard
-            let locations = thisRun.locations,
+            let locations = thisRun.location,
             locations.count > 0,
             let region = mapRegion()
             else {
